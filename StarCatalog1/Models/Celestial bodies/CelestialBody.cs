@@ -1,6 +1,6 @@
 ﻿namespace StarCatalog1
 {
-    public abstract class CelestialBody
+    public abstract class CelestialBody : INameable
     {
         public string Name { get; set; }
         public float Radius { get; set; }

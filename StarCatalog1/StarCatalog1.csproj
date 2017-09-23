@@ -42,9 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Angle.cs" />
+    <Compile Include="Models\Celestial bodies\INameable.cs" />
+    <Compile Include="Models\Angle.cs" />
     <Compile Include="Models\Constellation.cs" />
-    <Compile Include="EquatorialCoordinates.cs" />
+    <Compile Include="Models\EquatorialCoordinates.cs" />
     <Compile Include="MainClass.cs" />
     <Compile Include="MyCollection.cs" />
     <Compile Include="Models\Celestial bodies\Planet.cs" />

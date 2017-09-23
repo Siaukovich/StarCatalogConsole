@@ -14,6 +14,7 @@ namespace StarCatalog1
         /// Amount of elements in collection.
         /// </summary>
         private int _count;
+
         private T[] _items;
 
         #endregion
@@ -25,7 +26,7 @@ namespace StarCatalog1
 
         #endregion
 
-        #region Constructors and Indexator
+        #region Constructor and Indexator
 
         /// <summary>
         /// Creates a collection with needed capacity.
@@ -37,26 +38,18 @@ namespace StarCatalog1
             _items = new T[capacity];
         }
 
-        public MyCollection(params T[] values) : this(values.Length)
-        {
-            foreach (var value in values)
-            {
-                this.Add(value);
-            }
-        }
-
         public T this[int index]
         {
             get
             {
-                if (index < _count)
+                if (index >= 0 && index < _count)
                     return _items[index];
 
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
             set
             {
-                if (index < _count)
+                if (index >= 0 && index < _count)
                     _items[index] = value;
 
                 throw new ArgumentOutOfRangeException(nameof(index));
@@ -70,12 +63,16 @@ namespace StarCatalog1
         /// <summary>
         /// Adds element to the collection.
         /// If no space left in array, it doubles arrays size.
+        /// Adds only unique elements that are not in collection already.
         /// </summary>
-        /// <param name="item">Ёлемент который нужно добавить.</param>
+        /// <param name="item">Element to add.</param>
         public void Add(T item)
         {
             if (_count == _items.Length)
                 Array.Resize(ref _items, _items.Length * 2);
+
+            if (this.Contains(item))
+                return;
 
             _items[_count] = item;
             _count++;
@@ -84,7 +81,7 @@ namespace StarCatalog1
         public void Clear()
         {
             _count = 0;
-            var capacity = 10;
+            const int capacity = 10;
             _items = new T[capacity];
         }
 
@@ -106,10 +103,10 @@ namespace StarCatalog1
         }
 
         /// <summary>
-        /// ”дал€ет первое вхождение элемента в коллекции.
+        /// Removes element from collection.
         /// </summary>
-        /// <param name="item">Ёлемент который будет удалЄн</param>
-        /// <returns>true если элемент найден и удалЄн, иначе false</returns>
+        /// <param name="item">Element that will be deleted.</param>
+        /// <returns>true if found and removed, false otherwise</returns>
         public bool Remove(T item)
         {
             var numIndex = Array.IndexOf(_items, item);
@@ -121,7 +118,6 @@ namespace StarCatalog1
 
             // newSize = oldSize - 1
             _count--;
-            //Array.Resize(ref _items, _count);
 
             return true;
         }
@@ -132,7 +128,15 @@ namespace StarCatalog1
 
         #endregion
 
-        #region Helpers
+        #region Custom Methods
+
+        public bool RemoveAt(int index)
+        {
+            //if (index < 0 || _count <= index)
+            //    throw new ArgumentOutOfRangeException(nameof(index));
+
+            return this.Remove(_items[index]);
+        }
 
         /// <summary>
         /// Creates a string that contains list of fields you need.
@@ -141,6 +145,9 @@ namespace StarCatalog1
         /// <returns>String containing lit of fields.</returns>
         public string GetStringOfFields(Func<T, string> fieldToString)
         {
+            if (this._count == 0)
+                return "None";
+
             var returnString = new StringBuilder();
             for (var i = 0; i < _count; ++i)
             {

@@ -24,6 +24,17 @@ namespace StarCatalog1
 
         #endregion
 
+        #region Custom Methods
+
+        public void AddPlanet(string name, float radius, float mass,
+            float siderealDay, float siderealYear, float orbitRadius)
+        {
+            var newPlanet = new Planet(name, radius, mass, siderealDay, siderealYear, this, orbitRadius);
+            Planets.Add(newPlanet);
+        }
+
+        #endregion
+
         #region Helpers
 
         private void SetType()

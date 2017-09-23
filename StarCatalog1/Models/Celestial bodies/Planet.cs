@@ -7,14 +7,14 @@ namespace StarCatalog1
         #region Propereties
 
         /// <summary>
-        /// Period of rotation around planets own axis.
+        /// Period of rotation around planets own axis in seconds.
         /// </summary>
-        public TimeSpan SiderealDay { get; set; }
+        public float SiderealDay { get; set; }
 
         /// <summary>
-        /// Period of ratation around the host star.
+        /// Period of ratation around the host star in seconds.
         /// </summary>
-        public TimeSpan SiderealYear { get; set; }
+        public float SiderealYear { get; set; }
 
         public Star HostStar { get; set; }
         public float OrbitRadius { get; set; }
@@ -23,8 +23,9 @@ namespace StarCatalog1
 
         #region Constructor
 
-        public Planet(string name, float radius, float mass, TimeSpan siderealDay, TimeSpan siderealYear, 
-            Star hostStar, float orbitRadius) : base(name, radius, mass)
+        public Planet(string name, float radius, float mass, float siderealDay, 
+            float siderealYear, Star hostStar, float orbitRadius) 
+            : base(name, radius, mass)
         {
             this.SiderealDay = siderealDay;
             this.SiderealYear = siderealYear;

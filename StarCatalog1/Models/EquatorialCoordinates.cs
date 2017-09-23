@@ -2,7 +2,7 @@
 
 namespace StarCatalog1
 {
-    public partial class EquatorialCoordinates
+    public class EquatorialCoordinates
     {
         #region Private Fields
 
@@ -18,7 +18,9 @@ namespace StarCatalog1
             get => this._declination;
             set
             {
-                var valueIsValid = value >= -90 && value <= 90;
+                var minValue = new Angle(-90);
+                var maxValue = new Angle(90);
+                var valueIsValid = value >= minValue && value <= maxValue;
                 if (!valueIsValid)
                     throw new ArgumentOutOfRangeException(nameof(value));
 
@@ -31,7 +33,9 @@ namespace StarCatalog1
             get => this._rightAscension;
             set
             {
-                var valueIsValid = value >= 0 && value <= 360;
+                var minValue = new Angle(0);
+                var maxValue = new Angle(360);
+                var valueIsValid = value >= minValue && value <= maxValue;
                 if (!valueIsValid)
                     throw new ArgumentOutOfRangeException(nameof(value));
 
