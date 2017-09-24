@@ -30,12 +30,17 @@ namespace StarCatalog1
             return name.All(c => Char.IsLetter(c) || Char.IsWhiteSpace(c));
         }
 
-        public Constellation(string name,
-            EquatorialCoordinates coordinates, MyCollection<Star> stars)
+        public Constellation(string name, EquatorialCoordinates coordinates)
         {
             this.Name = name;
             this.Coordinates = coordinates;
-            this.Stars = stars;
+            this.Stars = new MyCollection<Star>();
+        }
+
+        public void AddStar(string name, float radius, float mass, float temperature)
+        {
+            var newStar = new Star(name, radius, mass, temperature);
+            this.Stars.Add(newStar);
         }
 
         public override string ToString()
