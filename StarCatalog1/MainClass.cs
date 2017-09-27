@@ -18,7 +18,7 @@ namespace StarCatalog
         {
             while (true)
             {
-                Console.WriteLine("\nYou are in main menu!");
+                Console.WriteLine("You are in main menu!");
                 Console.WriteLine("1) Show list of all constellations");
                 Console.WriteLine("2) Add new constellation");
                 Console.WriteLine("3) Remove constellation");
@@ -76,6 +76,7 @@ namespace StarCatalog
             Console.WriteLine("4) Remove star");
             Console.WriteLine("5) Correct star info");
             Console.WriteLine("0) Back to main menu");
+            Console.WriteLine();
 
             var field = GetIntValue(0, 5);
             switch (field)
@@ -98,7 +99,6 @@ namespace StarCatalog
                     Remove(_constellations[constellationIndex].Stars);
                     break;
                 case 5:
-                    // TODO: check if passed by reference without ref modifier.
                     CorrectStarsInfo(_constellations[constellationIndex]);
                     break;
                 case 6:
@@ -126,6 +126,7 @@ namespace StarCatalog
             Console.WriteLine("6) Remove planet");
             Console.WriteLine("7) Correct planet info");
             Console.WriteLine("0) Back to main menu");
+            Console.WriteLine();
 
             var field = GetIntValue(0, 7);
             switch (field)
@@ -232,6 +233,8 @@ namespace StarCatalog
                 Console.WriteLine($"{i}. " + element.Name);
                 ++i;
             }
+
+            Console.WriteLine();
         }
 
         private static void AddNewConstellation()

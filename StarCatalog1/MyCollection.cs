@@ -31,7 +31,7 @@ namespace StarCatalog
         /// <summary>
         /// Creates a collection with needed capacity.
         /// </summary>
-        /// <param name="capacity">Размер коллекции, по умолчанию равен 10.</param>
+        /// <param name="capacity">Collection size, 10 by default.</param>
         public MyCollection(int capacity = 10)
         {
             _count = 0;

@@ -74,7 +74,7 @@ namespace StarCatalog
         public override string ToString()
         {
             return $"Declination: {this._declination} \n" +
-                   $"Right ascension: {this._rightAscension}";
+                   $"Right ascension: {this._rightAscension}\n";
         }
 
         #endregion
