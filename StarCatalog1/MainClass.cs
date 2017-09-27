@@ -6,7 +6,7 @@ namespace StarCatalog
 {
     public class MainClass
     {
-        private static MyCollection<Constellation> _constellations = new MyCollection<Constellation>();
+        private static readonly MyCollection<Constellation> Constellations = new MyCollection<Constellation>();
 
         private static void Main(string[] args)
         {
@@ -30,41 +30,64 @@ namespace StarCatalog
                 Console.WriteLine();
                 switch (choice)
                 {
-                    case 1: ShowAllNames(_constellations); break;
+                    case 1: ShowAllNames(Constellations); break;
                     case 2: AddNewConstellation(); break;
-                    case 3: Remove(_constellations); break;
+                    case 3: Remove(Constellations); break;
                     case 4: CorrectConstellationInfo(); break;
-                    case 5: ShowFullInfo(_constellations); break;
+                    case 5: ShowFullInfo(Constellations); break;
                     case 0: return;
                 }
             }
         }
 
-        private static void ShowFullInfo<T>(IList<T> collection) where T: INameable
+        private static void ShowAllNames<T>(IEnumerable<T> collection) where T : INameable
+        {
+            var i = 1;
+            foreach (var element in collection)
+            {
+                Console.WriteLine($"{i}. " + element.Name);
+                ++i;
+            }
+
+            Console.WriteLine();
+        }
+
+        private static void AddNewConstellation()
+        {
+            var newConstellation = new Constellation(
+                name: GetName(),
+                coordinates: GetCoordinates()
+            );
+
+            Constellations.Add(newConstellation);
+
+            Console.WriteLine("Success!");
+            Console.WriteLine("Press any button to return to the menu.\n");
+            Console.ReadKey();
+        }
+
+        private static void Remove<T>(IList<T> collection) where T : INameable
         {
             ShowAllNames(collection);
-            Console.WriteLine("0. Back to main menu");
+            Console.WriteLine("0. Return to main menu");
+            Console.WriteLine("What element do you want to remove?");
+            var option = GetIntValue(0, Constellations.Count) - 1;
 
-            Console.WriteLine("Full info of which element you want to see?");
-            var elementIndex = GetIntValue(0, collection.Count) - 1;
-
-            if (elementIndex == -1)
+            if (option == -1)
                 return;
 
-            var elementInfo = collection[elementIndex].ToString();
-            Console.WriteLine(elementInfo);
+            collection.RemoveAt(option);
 
-            Console.WriteLine("Press any button to return to main menu.");
-            Console.ReadKey();
+            Console.WriteLine("Succesfully removed.");
         }
 
         private static void CorrectConstellationInfo()
         {
-            ShowAllNames(_constellations);
+            ShowAllNames(Constellations);
             Console.WriteLine("0. Back to main menu");
 
             Console.WriteLine("Info of which element you want to correct?");
-            var constellationIndex = GetIntValue(0, _constellations.Count) - 1;
+            var constellationIndex = GetIntValue(0, Constellations.Count) - 1;
 
             if (constellationIndex == -1)
                 return;
@@ -82,24 +105,24 @@ namespace StarCatalog
             switch (field)
             {
                 case 1:
-                    _constellations[constellationIndex].Name = GetName();
+                    Constellations[constellationIndex].Name = GetName();
                     break;
                 case 2:
-                    _constellations[constellationIndex].Coordinates = GetCoordinates();
+                    Constellations[constellationIndex].Coordinates = GetCoordinates();
                     break;
                 case 3:
-                    _constellations[constellationIndex].AddStar(
+                    Constellations[constellationIndex].AddStar(
                         name: GetName(),
                         radius: GetFloatValue("Input radius: "),
                         mass: GetFloatValue("Input mass: "),
                         temperature: GetFloatValue("Input temperature: ")
-                        );
+                    );
                     break;
                 case 4:
-                    Remove(_constellations[constellationIndex].Stars);
+                    Remove(Constellations[constellationIndex].Stars);
                     break;
                 case 5:
-                    CorrectStarsInfo(_constellations[constellationIndex]);
+                    CorrectStarsInfo(Constellations[constellationIndex]);
                     break;
                 case 6:
                     return;
@@ -151,7 +174,7 @@ namespace StarCatalog
                         siderealDay: GetFloatValue("Input length of sideral day in days: "),
                         siderealYear: GetFloatValue("Input length of sideral year in days: "),
                         orbitRadius: GetFloatValue("Input radius of the orbit in metres: ")
-                        );
+                    );
                     break;
                 case 6:
                     Remove(constellation.Stars[starIndex].Planets);
@@ -210,52 +233,29 @@ namespace StarCatalog
             }
         }
 
-        private static void Remove<T>(IList<T> collection) where T : INameable
+        private static void ShowFullInfo<T>(IList<T> collection) where T: INameable
         {
             ShowAllNames(collection);
-            Console.WriteLine("0. Return to main menu");
-            Console.WriteLine("What element do you want to remove?");
-            var option = GetIntValue(0, _constellations.Count) - 1;
+            Console.WriteLine("0. Back to main menu");
 
-            if (option == -1)
+            Console.WriteLine("Full info of which element you want to see?");
+            var elementIndex = GetIntValue(0, collection.Count) - 1;
+
+            if (elementIndex == -1)
                 return;
 
-            collection.RemoveAt(option);
+            var elementInfo = collection[elementIndex].ToString();
+            Console.WriteLine(elementInfo);
 
-            Console.WriteLine("Succesfully removed.");
-        }
-
-        private static void ShowAllNames<T>(IEnumerable<T> collection) where T: INameable
-        {
-            var i = 1;
-            foreach (var element in collection)
-            {
-                Console.WriteLine($"{i}. " + element.Name);
-                ++i;
-            }
-
-            Console.WriteLine();
-        }
-
-        private static void AddNewConstellation()
-        {
-            var newConstellation = new Constellation(
-                name: GetName(),
-                coordinates: GetCoordinates()
-            );
-
-            _constellations.Add(newConstellation);
-
-            Console.WriteLine("Success!");
-            Console.WriteLine("Press any button to return to the menu.");
+            Console.WriteLine("Press any button to return to main menu.");
             Console.ReadKey();
         }
 
-        private static EquatorialCoordinates GetCoordinates()
+        private static Coordinates GetCoordinates()
         {
             var declination = GetAngle("Input declination (between -90 and 90 degrees): ", f => (f >= -90f && f <= 90f));
             var rightAscension = GetAngle("Input right ascension (between 0 and 360 degrees): ", f => (f >= 0f && f <= 360f));
-            return new EquatorialCoordinates(declination, rightAscension);
+            return new Coordinates(declination, rightAscension);
         }
 
         private static string GetName() => GetFromConsole("Input name: ", s => s.All(IsLetterOrSpace));
@@ -300,10 +300,7 @@ namespace StarCatalog
                 Console.Write(message);
                 var input = Console.ReadLine();
                 if (!String.IsNullOrEmpty(input) && predicate(input))
-                {
-                    Console.WriteLine();
                     return input;
-                }
 
                 Console.WriteLine("Wrong input!");
             }
@@ -315,7 +312,7 @@ namespace StarCatalog
             var constellation1 =
                 new Constellation(
                     name: "Gemini",
-                    coordinates: new EquatorialCoordinates(
+                    coordinates: new Coordinates(
                         new Angle(20.23f),
                         new Angle(10.643f)
                 ));
@@ -332,7 +329,7 @@ namespace StarCatalog
             var constellation2 =
                 new Constellation(
                     name: "Orion",
-                    coordinates: new EquatorialCoordinates(
+                    coordinates: new Coordinates(
                         new Angle(-10.231f),
                         new Angle(67.98f)
                 ));
@@ -343,8 +340,8 @@ namespace StarCatalog
             constellation2.Stars[1].AddPlanet("Planet1", 2.1e4f, 3.1e21, 3.48e4f, 1.3e5f, 4e4f);
 
 
-            _constellations.Add(constellation1);
-            _constellations.Add(constellation2);
+            Constellations.Add(constellation1);
+            Constellations.Add(constellation2);
         }
     }
 }

@@ -73,14 +73,7 @@ namespace StarCatalog
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
 
-            for (var i = 0; i < _count; i++)
-            {
-                // TODO: default equals
-                if (item.Equals(_items[i]))
-                    return i;
-            }
-
-            return -1;
+            return Array.IndexOf(_items, item);
         }
 
         public void Insert(int index, T item)
@@ -97,8 +90,8 @@ namespace StarCatalog
         }
 
         /// <summary>
-        /// Adds element to the collection.
-        /// If no space left in array, it doubles arrays size.
+        /// Adds element to the end of the collection.
+        /// If no free space left in array, it doubles arrays size.
         /// Adds only unique elements that are not in collection already.
         /// </summary>
         /// <param name="item">Element to add.</param>
@@ -138,11 +131,6 @@ namespace StarCatalog
             _items.CopyTo(array, arrayIndex);
         }
 
-        /// <summary>
-        /// Removes element from collection.
-        /// </summary>
-        /// <param name="item">Element that will be deleted.</param>
-        /// <returns>true if found and removed, false otherwise</returns>
         public bool Remove(T item)
         {
             var numIndex = Array.IndexOf(_items, item);

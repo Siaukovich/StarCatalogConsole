@@ -13,7 +13,7 @@ namespace StarCatalog
 
         #region Public Propereties
 
-        public EquatorialCoordinates Coordinates { get; set; }
+        public Coordinates Coordinates { get; set; }
         public MyCollection<Star> Stars { get; set; }
         // TODO: Image
 
@@ -34,7 +34,7 @@ namespace StarCatalog
 
         #region Constructor
 
-        public Constellation(string name, EquatorialCoordinates coordinates)
+        public Constellation(string name, Coordinates coordinates)
         {
             this.Name = name;
             this.Coordinates = coordinates;

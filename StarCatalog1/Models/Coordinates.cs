@@ -2,7 +2,7 @@
 
 namespace StarCatalog
 {
-    public class EquatorialCoordinates
+    public class Coordinates
     {
         #region Private Fields
 
@@ -48,13 +48,13 @@ namespace StarCatalog
 
         #region Constructors
 
-        public EquatorialCoordinates(Angle declination, Angle rightAscension)
+        public Coordinates(Angle declination, Angle rightAscension)
         { 
             this.Declination = declination;
             this.RightAscension = rightAscension;
         }
 
-        public EquatorialCoordinates()
+        public Coordinates()
         {
             this.Declination = new Angle();
             this.RightAscension = new Angle();
@@ -66,7 +66,7 @@ namespace StarCatalog
 
         public override bool Equals(object other)
         {
-            return other is EquatorialCoordinates e &&
+            return other is Coordinates e &&
                    this.Declination.Equals(e.Declination) &&
                    this.RightAscension.Equals(e.RightAscension);
         }

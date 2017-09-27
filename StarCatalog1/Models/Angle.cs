@@ -39,6 +39,6 @@ namespace StarCatalog
             return other is Angle a && this.Value.Equals(a.Value);
         }
 
-        public override string ToString() => Value.ToString() + '\n';       
+        public override string ToString() => Value.ToString();       
     }
 }
