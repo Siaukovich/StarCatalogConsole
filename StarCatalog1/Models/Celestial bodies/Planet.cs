@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace StarCatalog1
+namespace StarCatalog
 {
-    public class Planet : CelestialBody
+    public class Planet : CelestialBody, IEquatable<Planet>
     {
         #region Propereties
 
@@ -35,17 +35,45 @@ namespace StarCatalog1
 
         #endregion
 
-        #region Helpers
+        #region Overrides
 
         public override string ToString()
         {
-            return $"Name: {Name}\n" +
-                   $"Radius: {Radius}\n" +
-                   $"Mass: {Mass}\n" +
-                   $"Period around planets axis: {SiderealDay}\n" +
-                   $"Period around host star: {SiderealYear}\n" +
+            return base.ToString() +
+                   $"Period around planets axis in seconds: {SiderealDay}\n" +
+                   $"Period around host star in seconds: {SiderealYear}\n" +
                    $"Host star: {HostStar}\n" +
-                   $"Radius of orbit: {OrbitRadius}";
+                   $"Radius of orbit in metres: {OrbitRadius}\n";
+        }
+
+        public bool Equals(Planet other)
+        {
+            return base.Equals(other) &&
+                   SiderealDay.Equals(other.SiderealDay) && 
+                   SiderealYear.Equals(other.SiderealYear) && 
+                   Equals(HostStar, other.HostStar) && 
+                   OrbitRadius.Equals(other.OrbitRadius);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+                return true;
+
+            return obj is Planet p &&
+                   this.Equals(p);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = SiderealDay.GetHashCode();
+                hashCode = (hashCode * 397) ^ SiderealYear.GetHashCode();
+                hashCode = (hashCode * 397) ^ (HostStar != null ? HostStar.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ OrbitRadius.GetHashCode();
+                return hashCode;
+            }
         }
 
         #endregion

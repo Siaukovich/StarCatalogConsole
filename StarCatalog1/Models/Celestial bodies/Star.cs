@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace StarCatalog1
+namespace StarCatalog
 {
-    public class Star : CelestialBody
+    public class Star : CelestialBody, IEquatable<Star>
     {
         #region Private Fields
 
@@ -91,6 +91,53 @@ namespace StarCatalog1
                 this.Type = StarType.B;
             else
                 this.Type = StarType.O;
+        }
+
+        #endregion
+
+        #region Overrides
+
+        public override string ToString()
+        {
+            var planets = Planets.GetStringOfFields(p => p.ToString());
+
+            return base.ToString() +
+                   $"Temprature in Kelvins: {Temperature}\n" +
+                   $"Luminosity in Watts: {Luminosity}\n" +
+                   $"Type: {Type}\n" +
+                    "Planets:\n" +
+                    planets;
+        }
+
+        public bool Equals(Star other)
+        {
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && 
+                   this.Radius.Equals(other.Radius) && 
+                   this.Luminosity.Equals(other.Luminosity) && 
+                   Type == other.Type;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+                return true;
+
+            return obj is Star s &&
+                   this.Equals(s);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ Temperature.GetHashCode();
+                hashCode = (hashCode * 397) ^ Luminosity.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int) Type;
+                hashCode = (hashCode * 397) ^ (Planets != null ? Planets.GetHashCode() : 0);
+                return hashCode;
+            }
         }
 
         #endregion

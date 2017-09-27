@@ -1,4 +1,4 @@
-﻿namespace StarCatalog1
+﻿namespace StarCatalog
 {
     public enum StarType
     {

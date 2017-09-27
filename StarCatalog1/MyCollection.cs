@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace StarCatalog1
+namespace StarCatalog
 {
-    public class MyCollection<T> : ICollection<T>, IEnumerable<T>
+    public class MyCollection<T> : IList<T>
     {
         #region Private Fields
 
@@ -38,6 +38,14 @@ namespace StarCatalog1
             _items = new T[capacity];
         }
 
+        public void RemoveAt(int index)
+        {
+            if (index < 0 || _count <= index)
+                throw new ArgumentOutOfRangeException(nameof(index));
+
+            Remove(_items[index]);
+        }
+
         public T this[int index]
         {
             get
@@ -59,6 +67,34 @@ namespace StarCatalog1
         #endregion
 
         #region Implementations of Interfaces
+
+        public int IndexOf(T item)
+        {
+            if (item == null)
+                throw new ArgumentNullException(nameof(item));
+
+            for (var i = 0; i < _count; i++)
+            {
+                // TODO: default equals
+                if (item.Equals(_items[i]))
+                    return i;
+            }
+
+            return -1;
+        }
+
+        public void Insert(int index, T item)
+        {
+            if (_items.Length == _count)
+                Array.Resize(ref _items, _items.Length * 2);
+
+            for (var i = index; i < _count; i++)
+            {
+                _items[i + 1] = _items[i];
+            }
+
+            _items[index] = item;
+        }
 
         /// <summary>
         /// Adds element to the collection.
@@ -129,14 +165,6 @@ namespace StarCatalog1
         #endregion
 
         #region Custom Methods
-
-        public bool RemoveAt(int index)
-        {
-            //if (index < 0 || _count <= index)
-            //    throw new ArgumentOutOfRangeException(nameof(index));
-
-            return this.Remove(_items[index]);
-        }
 
         /// <summary>
         /// Creates a string that contains list of fields you need.

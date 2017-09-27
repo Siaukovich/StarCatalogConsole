@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace StarCatalog1
+namespace StarCatalog
 {
-    public abstract class CelestialBody : INameable
+    public abstract class CelestialBody : INameable, IEquatable<CelestialBody>
     {
-        #region Private Fields
+        #region Protected Fields
 
         protected string _name;
         protected float _radius;
@@ -19,7 +19,7 @@ namespace StarCatalog1
             get => _name;
             set
             {
-                if (!String.IsNullOrEmpty(value))
+                if (String.IsNullOrEmpty(value))
                     throw new ArgumentException("Name cannot be null or empty", nameof(value));
 
                 _name = value;
@@ -53,11 +53,62 @@ namespace StarCatalog1
 
         #endregion
 
+        #region Constructor
+
         protected CelestialBody(string name, float radius, float mass)
         {
             this.Name = name;
             this.Radius = radius;
             this.Mass = mass;
         }
+        
+        #endregion
+        
+        #region IEquatable and ToString
+
+        public override bool Equals(object obj)
+        {
+            return obj is CelestialBody c1 &&
+                   this.Name.Equals(c1.Name) &&
+                   this.Radius.Equals(c1.Radius) &&
+                   this.Mass.Equals(c1.Mass);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (_name != null ? _name.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ _radius.GetHashCode();
+                hashCode = (hashCode * 397) ^ _mass.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        public bool Equals(CelestialBody other)
+        {
+            if (ReferenceEquals(null, other))
+                return false;
+
+            if (ReferenceEquals(this, other))
+                return true;
+
+            return this.Name.Equals(other.Name) &&
+                   this.Radius.Equals(other.Radius) &&
+                   this.Mass.Equals(other.Mass);
+        }
+
+        /// <summary>
+        /// Return as string values of Name, Radius and Mass.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"Name: {Name}\n" +
+                   $"Raius: {Radius}\n" +
+                   $"Mass: {Mass}\n";
+        }
+
+        #endregion
     }
 }

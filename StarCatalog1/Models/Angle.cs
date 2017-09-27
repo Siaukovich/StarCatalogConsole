@@ -1,16 +1,10 @@
 ﻿using System;
 
-namespace StarCatalog1
+namespace StarCatalog
 {
     public class Angle
     {
-        private float _value;
-
-        public float Value
-        {
-            get => this._value;
-            set => this._value = value % 360;
-        }
+        public float Value { get; set; }
 
         public Angle(float value = 0)
         {
@@ -33,35 +27,18 @@ namespace StarCatalog1
         public static bool TryParse(string str, out Angle value)
         {
             value = new Angle();
-            if (Single.TryParse(str, out float result))
-            {
-                value.Value = result;
-                return true;
-            }
+            if (!Single.TryParse(str, out float result))
+                return false;
 
-            return false;
+            value.Value = result;
+            return true;
         }
 
-        /// <summary>
-        /// Parse from string to Angle.
-        /// Returns new Angle object if parsing successfull, null otherwise.
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        //public static Angle Parse(string str)
-        //{
-        //    try
-        //    {
-        //        var floatValue = Convert.ToSingle(str);
-        //        return new Angle(floatValue);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine(e.Message);
-        //        return null;
-        //    }
-        //}
+        public override bool Equals(object other)
+        {
+            return other is Angle a && this.Value.Equals(a.Value);
+        }
 
-        public override string ToString() => _value.ToString();       
+        public override string ToString() => Value.ToString();       
     }
 }

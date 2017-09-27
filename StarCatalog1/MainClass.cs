@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace StarCatalog1
+namespace StarCatalog
 {
     public class MainClass
     {
@@ -22,7 +18,7 @@ namespace StarCatalog1
         {
             while (true)
             {
-                Console.WriteLine("You are in main menu!");
+                Console.WriteLine("\nYou are in main menu!");
                 Console.WriteLine("1) Show list of all constellations");
                 Console.WriteLine("2) Add new constellation");
                 Console.WriteLine("3) Remove constellation");
@@ -30,7 +26,7 @@ namespace StarCatalog1
                 Console.WriteLine("5) Show constellation info in details");
                 Console.WriteLine("0) Exit");
 
-                var choice = GetIntValue(0, 9);
+                var choice = GetIntValue(0, 5);
                 Console.WriteLine();
                 switch (choice)
                 {
@@ -38,30 +34,47 @@ namespace StarCatalog1
                     case 2: AddNewConstellation(); break;
                     case 3: Remove(_constellations); break;
                     case 4: CorrectConstellationInfo(); break;
-                    //case 5: ShowInfo(); break;
-                    case 0: break;
+                    case 5: ShowFullInfo(_constellations); break;
+                    case 0: return;
                 }
             }
+        }
+
+        private static void ShowFullInfo<T>(IList<T> collection) where T: INameable
+        {
+            ShowAllNames(collection);
+            Console.WriteLine("0. Back to main menu");
+
+            Console.WriteLine("Full info of which element you want to see?");
+            var elementIndex = GetIntValue(0, collection.Count) - 1;
+
+            if (elementIndex == -1)
+                return;
+
+            var elementInfo = collection[elementIndex].ToString();
+            Console.WriteLine(elementInfo);
         }
 
         private static void CorrectConstellationInfo()
         {
             ShowAllNames(_constellations);
-            Console.WriteLine("0) Back to main menu");
+            Console.WriteLine("0. Back to main menu");
 
             Console.WriteLine("Info of which element you want to correct?");
-            var constellationIndex = GetIntValue(0, _constellations.Count);
+            var constellationIndex = GetIntValue(0, _constellations.Count) - 1;
 
-            if (constellationIndex == 0)
+            if (constellationIndex == -1)
                 return;
 
             Console.WriteLine("What you want to do?");
             Console.WriteLine("1) Name");
             Console.WriteLine("2) Coordinates");
             Console.WriteLine("3) Add a star");
-            Console.WriteLine("4) Correct star info");
+            Console.WriteLine("4) Remove star");
+            Console.WriteLine("5) Correct star info");
+            Console.WriteLine("0) Back to main menu");
 
-            var field = GetIntValue(1, 4);
+            var field = GetIntValue(0, 5);
             switch (field)
             {
                 case 1:
@@ -79,21 +92,26 @@ namespace StarCatalog1
                         );
                     break;
                 case 4:
+                    Remove(_constellations[constellationIndex].Stars);
+                    break;
+                case 5:
                     // TODO: check if passed by reference without ref modifier.
                     CorrectStarsInfo(_constellations[constellationIndex]);
                     break;
+                case 6:
+                    return;
             }
         }
 
         private static void CorrectStarsInfo(Constellation constellation)
         {
             ShowAllNames(constellation.Stars);
-            Console.WriteLine("0) Back to main menu");
+            Console.WriteLine("0. Back to main menu");
 
             Console.WriteLine("Info of which element you want to correct?");
-            var starIndex = GetIntValue(0, constellation.Stars.Count);
+            var starIndex = GetIntValue(0, constellation.Stars.Count) - 1;
 
-            if (starIndex == 0)
+            if (starIndex == -1)
                 return;
 
             Console.WriteLine("What field you want to correct?");
@@ -102,22 +120,24 @@ namespace StarCatalog1
             Console.WriteLine("3) Temperature");
             Console.WriteLine("4) Mass");
             Console.WriteLine("5) Add planet");
-            Console.WriteLine("6) Correct planet info");
+            Console.WriteLine("6) Remove planet");
+            Console.WriteLine("7) Correct planet info");
+            Console.WriteLine("0) Back to main menu");
 
-            var field = GetIntValue(1, 5);
+            var field = GetIntValue(0, 7);
             switch (field)
             {
                 case 1:
                     constellation.Stars[starIndex].Name = GetName();
                     break;
                 case 2:
-                    constellation.Stars[starIndex].Radius = GetFloatValue("Input raduis: ");
+                    constellation.Stars[starIndex].Radius = GetFloatValue("Input raduis in metres: ");
                     break;
                 case 3:
-                    constellation.Stars[starIndex].Temperature = GetFloatValue("Input temperature: ");
+                    constellation.Stars[starIndex].Temperature = GetFloatValue("Input temperature in Kelvins: ");
                     break;
                 case 4:
-                    constellation.Stars[starIndex].Mass = GetFloatValue("Input mass: ");
+                    constellation.Stars[starIndex].Mass = GetFloatValue("Input mass in kg: ");
                     break;
                 case 5:
                     constellation.Stars[starIndex].AddPlanet(
@@ -130,49 +150,85 @@ namespace StarCatalog1
                         );
                     break;
                 case 6:
+                    Remove(constellation.Stars[starIndex].Planets);
+                    break;
+                case 7:
                     CorrectPlanetInfo(constellation.Stars[starIndex]);
                     break;
+                case 0:
+                    return;
             }
         }
 
         private static void CorrectPlanetInfo(Star star)
         {
             ShowAllNames(star.Planets);
+            Console.WriteLine("0. Back to main menu");
+
+            Console.WriteLine("Info of which element you want to correct?");
+            var planetIndex = GetIntValue(0, star.Planets.Count) - 1;
+
+            if (planetIndex == -1)
+                return;
+
+            Console.WriteLine("What field you want to correct?");
+            Console.WriteLine("1) Name");
+            Console.WriteLine("2) Radius");
+            Console.WriteLine("3) Mass");
+            Console.WriteLine("4) Sideral day");
+            Console.WriteLine("5) Sideral year");
+            Console.WriteLine("6) Orbit radius");
             Console.WriteLine("0) Back to main menu");
+
+            var option = GetIntValue(0, 6);
+            switch (option)
+            {
+                case 1:
+                    star.Planets[planetIndex].Name = GetName();
+                    break;
+                case 2:
+                    star.Planets[planetIndex].Radius = GetFloatValue("Input planets radius in metres: ");
+                    break;
+                case 3:
+                    star.Planets[planetIndex].Mass = GetFloatValue("Input planets mass in kg: ");
+                    break;
+                case 4:
+                    star.Planets[planetIndex].SiderealDay = GetFloatValue("Input planets sideral day in seconds: ");
+                    break;
+                case 5:
+                    star.Planets[planetIndex].SiderealYear = GetFloatValue("Input planets sideral year in seconds: ");
+                    break;
+                case 6:
+                    star.Planets[planetIndex].OrbitRadius = GetFloatValue("Input planets orbit radius in metres: ");
+                    break;
+                case 0:
+                    return;
+            }
         }
 
-        private static void Remove<T>(ICollection<T> collection) where T : INameable
+        private static void Remove<T>(IList<T> collection) where T : INameable
         {
             ShowAllNames(collection);
-            Console.WriteLine("Which one you want to remove?");
-            var option = GetIntValue(1, _constellations.Count - 1);
-            var i = 1;
-            foreach (var item in collection)
-            {
-                if (i != option)
-                {
-                    ++i;
-                    continue;
-                }
+            Console.WriteLine("0. Return to main menu");
+            Console.WriteLine("What element do you want to remove?");
+            var option = GetIntValue(0, _constellations.Count) - 1;
 
-                collection.Remove(item);
-                break;
-            }
+            if (option == -1)
+                return;
+
+            collection.RemoveAt(option);
 
             Console.WriteLine("Succesfully removed.");
         }
 
-        private static void ShowAllNames<T>(ICollection<T> collection) where T: INameable
+        private static void ShowAllNames<T>(IEnumerable<T> collection) where T: INameable
         {
             var i = 1;
             foreach (var element in collection)
             {
-                Console.WriteLine($"{i}.\n" + element.Name);
+                Console.WriteLine($"{i}. " + element.Name);
                 ++i;
             }
-
-            Console.WriteLine("Press any button to return to the menu.");
-            Console.ReadKey();
         }
 
         private static void AddNewConstellation()
@@ -196,9 +252,9 @@ namespace StarCatalog1
             return new EquatorialCoordinates(declination, rightAscension);
         }
 
-        public static bool IsLetterOrSpace(char ch) => Char.IsLetter(ch) || ch == ' ';
-
         private static string GetName() => GetFromConsole("Input name: ", s => s.All(IsLetterOrSpace));
+
+        public static bool IsLetterOrSpace(char ch) => Char.IsLetter(ch) || ch == ' ';
 
         private static Angle GetAngle(string message)
         {
@@ -251,8 +307,8 @@ namespace StarCatalog1
                     coordinates: new EquatorialCoordinates(
                         new Angle(20.23f),
                         new Angle(10.643f)
-                        )
-                );
+                ));
+
             constellation1.AddStar("Castor", 1.1e8f, 1.4e29f, 4.43e28f);
             constellation1.AddStar("Pollux", 2.1e8f, 1.1e29f, 3.3e28f);
 
@@ -268,8 +324,7 @@ namespace StarCatalog1
                     coordinates: new EquatorialCoordinates(
                         new Angle(-10.231f),
                         new Angle(67.98f)
-                    )
-                );
+                ));
 
             constellation2.AddStar("Bitelguse", 1.1e8f, 1.4e29f, 4.43e28f);
             constellation2.AddStar("Mintaka", 2.1e8f, 1.1e29f, 3.3e28f);

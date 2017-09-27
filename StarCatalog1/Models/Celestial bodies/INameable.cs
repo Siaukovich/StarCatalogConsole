@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace StarCatalog1
+﻿namespace StarCatalog
 {
     public interface INameable
     {

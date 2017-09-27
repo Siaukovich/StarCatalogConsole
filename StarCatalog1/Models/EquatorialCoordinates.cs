@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StarCatalog1
+namespace StarCatalog
 {
     public class EquatorialCoordinates
     {
@@ -34,7 +34,7 @@ namespace StarCatalog1
             set
             {
                 var minValue = new Angle(0);
-                var maxValue = new Angle(360);
+                var maxValue = new Angle(360f);
                 var valueIsValid = value >= minValue && value <= maxValue;
                 if (!valueIsValid)
                     throw new ArgumentOutOfRangeException(nameof(value));
@@ -64,9 +64,16 @@ namespace StarCatalog1
 
         #region Helpers
 
+        public override bool Equals(object other)
+        {
+            return other is EquatorialCoordinates e &&
+                   this.Declination.Equals(e.Declination) &&
+                   this.RightAscension.Equals(e.RightAscension);
+        }
+
         public override string ToString()
         {
-            return $"Declination: {this._declination}\n" +
+            return $"Declination: {this._declination} \n" +
                    $"Right ascension: {this._rightAscension}";
         }
 
