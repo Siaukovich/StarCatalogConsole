@@ -45,7 +45,7 @@ namespace StarCatalog
 
         #region Helpers
 
-        public void AddStar(string name, float radius, float mass, float temperature)
+        public void AddStar(string name, float radius, double mass, float temperature)
         {
             var newStar = new Star(name, radius, mass, temperature);
             this.Stars.Add(newStar);

@@ -23,7 +23,7 @@ namespace StarCatalog
 
         #region Constructor
 
-        public Planet(string name, float radius, float mass, float siderealDay, 
+        public Planet(string name, float radius, double mass, float siderealDay, 
             float siderealYear, Star hostStar, float orbitRadius) 
             : base(name, radius, mass)
         {
@@ -42,7 +42,7 @@ namespace StarCatalog
             return base.ToString() +
                    $"Period around planets axis in seconds: {SiderealDay}\n" +
                    $"Period around host star in seconds: {SiderealYear}\n" +
-                   $"Host star: {HostStar}\n" +
+                   $"Host star: {HostStar.Name}\n" +
                    $"Radius of orbit in metres: {OrbitRadius}\n";
         }
 

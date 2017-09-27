@@ -22,7 +22,7 @@ namespace StarCatalog
                 var maxValue = new Angle(90);
                 var valueIsValid = value >= minValue && value <= maxValue;
                 if (!valueIsValid)
-                    throw new ArgumentOutOfRangeException(nameof(value));
+                    throw new ArgumentOutOfRangeException(nameof(value), "DEC must be between -90 and 90");
 
                 this._declination = value;
             }
@@ -37,7 +37,7 @@ namespace StarCatalog
                 var maxValue = new Angle(360f);
                 var valueIsValid = value >= minValue && value <= maxValue;
                 if (!valueIsValid)
-                    throw new ArgumentOutOfRangeException(nameof(value));
+                    throw new ArgumentOutOfRangeException(nameof(value), "RA must be between 0 and 360");
 
                 this._rightAscension = value;
             }

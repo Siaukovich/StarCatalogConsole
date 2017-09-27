@@ -180,7 +180,7 @@ namespace StarCatalog
             for (var i = 0; i < _count; ++i)
             {
                 var field = fieldToString(_items[i]);
-                returnString.Append($"{i}) {field}\n");
+                returnString.Append($"{i + 1}) {field}\n");
             }
 
             return returnString.ToString();

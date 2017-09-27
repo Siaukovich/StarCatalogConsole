@@ -8,7 +8,7 @@ namespace StarCatalog
 
         protected string _name;
         protected float _radius;
-        protected float _mass;
+        protected double _mass;
 
         #endregion
 
@@ -38,7 +38,7 @@ namespace StarCatalog
             }
         }
 
-        public float Mass
+        public double Mass
         {
             get => _mass;
             set
@@ -55,7 +55,7 @@ namespace StarCatalog
 
         #region Constructor
 
-        protected CelestialBody(string name, float radius, float mass)
+        protected CelestialBody(string name, float radius, double mass)
         {
             this.Name = name;
             this.Radius = radius;
@@ -105,8 +105,8 @@ namespace StarCatalog
         public override string ToString()
         {
             return $"Name: {Name}\n" +
-                   $"Raius: {Radius}\n" +
-                   $"Mass: {Mass}\n";
+                   $"Raius in meteres: {Radius}\n" +
+                   $"Mass in kg: {Mass}\n";
         }
 
         #endregion

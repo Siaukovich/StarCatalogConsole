@@ -38,7 +38,7 @@ namespace StarCatalog
                 SetType();
             }
         }
-        public float Luminosity { get; private set; }
+        public double Luminosity { get; private set; }
         public StarType Type { get; private set; }
         public MyCollection<Planet> Planets { get; set; }
 
@@ -46,7 +46,7 @@ namespace StarCatalog
 
         #region Constructor
 
-        public Star(string name, float radius, float mass, float temperature) 
+        public Star(string name, float radius, double mass, float temperature) 
             : base(name, radius, mass)
         {
             this.Temperature = temperature;
@@ -57,7 +57,7 @@ namespace StarCatalog
 
         #region Custom Methods
 
-        public void AddPlanet(string name, float radius, float mass,
+        public void AddPlanet(string name, float radius, double mass,
             float siderealDay, float siderealYear, float orbitRadius)
         {
             var newPlanet = new Planet(name, radius, mass, siderealDay, siderealYear, this, orbitRadius);
@@ -71,8 +71,8 @@ namespace StarCatalog
         private void SetLuminosity()
         {
             const float sigma = 5.67e-8f;
-            this.Luminosity = (float) (4 * Math.PI * Math.Pow(this.Radius, 2) * 
-                sigma * Math.Pow(this.Temperature, 4));
+            this.Luminosity = 4 * Math.PI * Math.Pow(this.Radius, 2) * 
+                sigma * Math.Pow(this.Temperature, 4);
         }
 
         private void SetType()

@@ -53,6 +53,9 @@ namespace StarCatalog
 
             var elementInfo = collection[elementIndex].ToString();
             Console.WriteLine(elementInfo);
+
+            Console.WriteLine("Press any button to return to main menu.");
+            Console.ReadKey();
         }
 
         private static void CorrectConstellationInfo()
@@ -247,8 +250,8 @@ namespace StarCatalog
 
         private static EquatorialCoordinates GetCoordinates()
         {
-            var declination = GetAngle("Input declination (between -90 and 90 degrees): ");
-            var rightAscension = GetAngle("Input right ascension (between 0 and 360 degrees): ");
+            var declination = GetAngle("Input declination (between -90 and 90 degrees): ", f => (f >= -90f && f <= 90f));
+            var rightAscension = GetAngle("Input right ascension (between 0 and 360 degrees): ", f => (f >= 0f && f <= 360f));
             return new EquatorialCoordinates(declination, rightAscension);
         }
 
@@ -256,9 +259,11 @@ namespace StarCatalog
 
         public static bool IsLetterOrSpace(char ch) => Char.IsLetter(ch) || ch == ' ';
 
-        private static Angle GetAngle(string message)
+        private static Angle GetAngle(string message, Predicate<float> predicate)
         {
-            var input = GetFromConsole(message, s => Single.TryParse(s, out float _));
+            var input = GetFromConsole(message, s => Single.TryParse(s, out float f) &&
+                                                     predicate(f));
+
             var floatValue = Convert.ToSingle(input);
             return new Angle(floatValue);
         }
@@ -292,7 +297,10 @@ namespace StarCatalog
                 Console.Write(message);
                 var input = Console.ReadLine();
                 if (!String.IsNullOrEmpty(input) && predicate(input))
+                {
+                    Console.WriteLine();
                     return input;
+                }
 
                 Console.WriteLine("Wrong input!");
             }
@@ -309,13 +317,13 @@ namespace StarCatalog
                         new Angle(10.643f)
                 ));
 
-            constellation1.AddStar("Castor", 1.1e8f, 1.4e29f, 4.43e28f);
-            constellation1.AddStar("Pollux", 2.1e8f, 1.1e29f, 3.3e28f);
+            constellation1.AddStar("Castor", 1.1e8f, 1.4e29, 4.43e28f);
+            constellation1.AddStar("Pollux", 2.1e8f, 1.1e29, 3.3e28f);
 
-            constellation1.Stars[0].AddPlanet("Planet1", 1.1e4f, 4.8e21f,  1.8e4f,   7.3e5f, 1.1e8f);
-            constellation1.Stars[0].AddPlanet("Planet2", 2.2e4f, 3.21e21f, 1.28e4f, 17.3e5f, 4.1e8f);
+            constellation1.Stars[0].AddPlanet("Planet1", 1.1e4f, 4.8e21,  1.8e4f,   7.3e5f, 1.1e8f);
+            constellation1.Stars[0].AddPlanet("Planet2", 2.2e4f, 3.21e21, 1.28e4f, 17.3e5f, 4.1e8f);
 
-            constellation1.Stars[1].AddPlanet("Planet1", 2.1e4f, 3.1e21f, 3.48e4f, 1.3e5f, 4e4f);
+            constellation1.Stars[1].AddPlanet("Planet1", 2.1e4f, 3.1e21, 3.48e4f, 1.3e5f, 4e4f);
 
             // Second constellation.
             var constellation2 =
@@ -326,10 +334,10 @@ namespace StarCatalog
                         new Angle(67.98f)
                 ));
 
-            constellation2.AddStar("Bitelguse", 1.1e8f, 1.4e29f, 4.43e28f);
-            constellation2.AddStar("Mintaka", 2.1e8f, 1.1e29f, 3.3e28f);
+            constellation2.AddStar("Bitelguse", 1.1e8f, 1.4e29, 4.43e28f);
+            constellation2.AddStar("Mintaka", 2.1e8f, 1.1e29, 3.3e28f);
 
-            constellation2.Stars[1].AddPlanet("Planet1", 2.1e4f, 3.1e21f, 3.48e4f, 1.3e5f, 4e4f);
+            constellation2.Stars[1].AddPlanet("Planet1", 2.1e4f, 3.1e21, 3.48e4f, 1.3e5f, 4e4f);
 
 
             _constellations.Add(constellation1);
