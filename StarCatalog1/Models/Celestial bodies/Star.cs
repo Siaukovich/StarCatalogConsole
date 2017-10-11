@@ -127,19 +127,6 @@ namespace StarCatalog
                    this.Equals(s);
         }
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ Temperature.GetHashCode();
-                hashCode = (hashCode * 397) ^ Luminosity.GetHashCode();
-                hashCode = (hashCode * 397) ^ (int) Type;
-                hashCode = (hashCode * 397) ^ (Planets != null ? Planets.GetHashCode() : 0);
-                return hashCode;
-            }
-        }
-
         #endregion
     }
 }

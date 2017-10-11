@@ -10,11 +10,7 @@ namespace StarCatalog
     {
         #region Private Fields
 
-        /// <summary>
-        /// Amount of elements in collection.
-        /// </summary>
         private int _count;
-
         private T[] _items;
 
         #endregion
@@ -28,10 +24,6 @@ namespace StarCatalog
 
         #region Constructor and Indexator
 
-        /// <summary>
-        /// Creates a collection with needed capacity.
-        /// </summary>
-        /// <param name="capacity">Collection size, 10 by default.</param>
         public MyCollection(int capacity = 10)
         {
             _count = 0;
@@ -89,12 +81,6 @@ namespace StarCatalog
             _items[index] = item;
         }
 
-        /// <summary>
-        /// Adds element to the end of the collection.
-        /// If no free space left in array, it doubles arrays size.
-        /// Adds only unique elements that are not in collection already.
-        /// </summary>
-        /// <param name="item">Element to add.</param>
         public void Add(T item)
         {
             if (_count == _items.Length)
@@ -176,9 +162,6 @@ namespace StarCatalog
 
         #endregion
 
-        /// <summary>
-        /// Class, that implements IEnumerator interface.
-        /// </summary>
         private class CollectionEnumerator : IEnumerator<T>
         {
             private readonly MyCollection<T> _this;

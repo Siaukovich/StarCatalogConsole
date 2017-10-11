@@ -69,20 +69,7 @@ namespace StarCatalog
         public override bool Equals(object obj)
         {
             return obj is CelestialBody c1 &&
-                   this.Name.Equals(c1.Name) &&
-                   this.Radius.Equals(c1.Radius) &&
-                   this.Mass.Equals(c1.Mass);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = (_name != null ? _name.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ _radius.GetHashCode();
-                hashCode = (hashCode * 397) ^ _mass.GetHashCode();
-                return hashCode;
-            }
+                   Equals(c1);
         }
 
         public bool Equals(CelestialBody other)
@@ -98,14 +85,10 @@ namespace StarCatalog
                    this.Mass.Equals(other.Mass);
         }
 
-        /// <summary>
-        /// Return as string values of Name, Radius and Mass.
-        /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             return $"Name: {Name}\n" +
-                   $"Raius in meteres: {Radius}\n" +
+                   $"Radious in meteres: {Radius}\n" +
                    $"Mass in kg: {Mass}\n";
         }
 

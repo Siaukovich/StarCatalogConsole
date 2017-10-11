@@ -64,18 +64,6 @@ namespace StarCatalog
                    this.Equals(p);
         }
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = SiderealDay.GetHashCode();
-                hashCode = (hashCode * 397) ^ SiderealYear.GetHashCode();
-                hashCode = (hashCode * 397) ^ (HostStar != null ? HostStar.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ OrbitRadius.GetHashCode();
-                return hashCode;
-            }
-        }
-
         #endregion
     }
 }

@@ -30,18 +30,35 @@ namespace StarCatalog
                 Console.WriteLine();
                 switch (choice)
                 {
-                    case 1: ShowAllNames(Constellations); break;
-                    case 2: AddNewConstellation(); break;
-                    case 3: Remove(Constellations); break;
-                    case 4: CorrectConstellationInfo(); break;
-                    case 5: ShowFullInfo(Constellations); break;
-                    case 0: return;
+                    case 1:
+                        ShowAllNames(Constellations);
+                        break;
+                    case 2:
+                        AddNewConstellation();
+                        break;
+                    case 3:
+                        Remove(Constellations);
+                        break;
+                    case 4:
+                        CorrectConstellationInfo();
+                        break;
+                    case 5:
+                        ShowFullInfo(Constellations);
+                        break;
+                    case 0:
+                        return;
                 }
             }
         }
 
-        private static void ShowAllNames<T>(IEnumerable<T> collection) where T : INameable
+        private static void ShowAllNames<T>(ICollection<T> collection) where T : INameable
         {
+            if (collection.Count == 0)
+            {
+                Console.WriteLine("None\n");
+                return;
+            }
+
             var i = 1;
             foreach (var element in collection)
             {
@@ -171,8 +188,8 @@ namespace StarCatalog
                         name: GetName(),
                         radius: GetFloatValue("Input radius in metres: "),
                         mass: GetFloatValue("Input mass in kg: "),
-                        siderealDay: GetFloatValue("Input length of sideral day in days: "),
-                        siderealYear: GetFloatValue("Input length of sideral year in days: "),
+                        siderealDay: GetFloatValue("Input length of sideral day in seconds: "),
+                        siderealYear: GetFloatValue("Input length of sideral year in seconds: "),
                         orbitRadius: GetFloatValue("Input radius of the orbit in metres: ")
                     );
                     break;
@@ -273,8 +290,8 @@ namespace StarCatalog
 
         private static int GetIntValue(int min, int max)
         {
-            var input = GetFromConsole("Input a number: ", 
-                s => Int32.TryParse(s, out int v) && min <= v && v <= max);
+            var input = GetFromConsole("Input a number: ", s => Int32.TryParse(s, out int v) && 
+                                                                min <= v && v <= max);
 
             var intValue = Convert.ToInt32(input);
             return intValue;
@@ -282,7 +299,9 @@ namespace StarCatalog
 
         private static float GetFloatValue(string message)
         {
-            var input = GetFromConsole(message, s => Single.TryParse(s, out float _));
+            var input = GetFromConsole(message, s => Single.TryParse(s, out float v) && 
+                                                     v > 0);
+
             var floatValue = Convert.ToSingle(input);
             return floatValue;
         }
